@@ -20,7 +20,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    container_name: auth_rmq_container
+    container_name: rmq_container
     env_file: .env
     volumes:
       - "rmq_data:/data"
