@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: auth_rmq_container
+    env_file: .env
+    volumes:
+      - "rmq_data:/data"
+  db:
+    image: mysql:8.0.23
+    restart: on-failure
+    ports:
+      - 3307:3306
+    env_file:
+      - .env
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
+  rmq_data:
